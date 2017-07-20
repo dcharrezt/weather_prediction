@@ -1,0 +1,6 @@
+USAF-WBAN_ID STATION NAME                   COUNTRY                                            STATE 			      LATITUDE LONGITUDE ELEVATION
+------------ ------------------------------ -------------------------------------------------- ------------------------------ -------- --------- ---------
+
+847520 99999 RODRIGUEZ BALLON               PERU                                                                               -16.341  -071.583   +2561.8
+
+USAF,YR--MODAHRMN,SPD,TEMP,DEWP
