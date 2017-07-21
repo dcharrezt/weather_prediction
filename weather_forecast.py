@@ -11,7 +11,7 @@ from keras.layers import LSTM
 from keras.models import load_model
 from math import sqrt
 from matplotlib import pyplot
-import numpy
+import numpy as np
 
 
 model = load_model('models/lstm_24.h5')
