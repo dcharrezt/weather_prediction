@@ -1,7 +1,13 @@
 import numpy as np
 import pandas as pd
 
-#import keras
+from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import MinMaxScaler
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import LSTM
+from keras.models import Model
+from math import sqrt
 
 import preprocess_data as prep
 
@@ -66,15 +72,33 @@ def fit_lstm(train, batch_size, nb_epoch, neurons):
 	model.add(Dense(1))
 	model.compile(loss='mean_squared_error', optimizer='adam')
 	for i in range(nb_epoch):
-		model.fit(X, y, epochs=1, batch_size=batch_size, \
-					verbose=0, shuffle=False)
+		model.fit(X, y, epochs=100, batch_size=batch_size, \
+					verbose=2, shuffle=False)
 		model.reset_states()
 	return model
 
+###################################################################
 
-
+# transfor data to be supervised
 ms = timeseries_to_supervised(dataset, 24)
-ms.to_csv('filtered', sep=',')
+print(len(ms))
 
-print(ms)
+# spliting data 20 % to test
+p = 0.79994783516
+temperatures = np.array(ms[['temperature', 'temp_r']])
+train, test = temperatures[:int(len(temperatures)*p)], \
+			temperatures[int(len(temperatures)*p):]
+
+scaler, train_scaled, test_scaled = scale(train, test)
+
+#y = np.array(ms['temp_r'])
+
+batch_size = 24
+n_epochs = 15
+neurons = 4
+
+lstm_model = fit_lstm(train_scaled, batch_size, n_epochs, neurons)
+
+lstm_model.save('models/lstm_24_1500.h5')
+lstm_model.save_weights('models/lstm_weights_24_1500.h5')
 
